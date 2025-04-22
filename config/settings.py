@@ -30,7 +30,32 @@ DEBUG = True
 # Get the local IP address
 LOCAL_IP = get_local_ip()
 
-ALLOWED_HOSTS = ['*'] if DEBUG else ['your-production-domain.com']
+# CORS settings
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+# Allow all headers and methods for development
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Security settings for development
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://192.168.0.126:8000',
+    'http://192.168.0.126',
+]
+
+# Remove any IP address restrictions
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,12 +68,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'core',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

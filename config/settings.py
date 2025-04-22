@@ -1,3 +1,162 @@
+# """
+# Django settings for config project.
+# """
+
+# import os
+# from pathlib import Path
+
+# # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR = Path(__file__).resolve().parent.parent
+
+# # SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-wmny_ex_m87ue6ir@s07yuu6k5w!8_*6scr)m%z3$jdji^z&%g')
+
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+# # Get Railway URLs
+# RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL', '')
+# RAILWAY_PRIVATE_DOMAIN = os.environ.get('RAILWAY_PRIVATE_DOMAIN', '')
+
+# ALLOWED_HOSTS = [
+#     'localhost',
+#     '127.0.0.1',
+#     '0.0.0.0',
+#     '.railway.app',
+#     RAILWAY_STATIC_URL,
+#     RAILWAY_PRIVATE_DOMAIN,
+# ]
+
+# # CORS settings
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
+
+# # Allow all headers and methods
+# CORS_ALLOW_HEADERS = ['*']
+# CORS_ALLOW_METHODS = [
+#     'DELETE',
+#     'GET',
+#     'OPTIONS',
+#     'PATCH',
+#     'POST',
+#     'PUT',
+# ]
+
+# # Security settings
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:8000',
+#     'http://127.0.0.1:8000',
+# ]
+
+# # Add Railway domains to CSRF trusted origins
+# if RAILWAY_STATIC_URL:
+#     CSRF_TRUSTED_ORIGINS.extend([
+#         f'https://{RAILWAY_STATIC_URL}',
+#         f'http://{RAILWAY_STATIC_URL}'
+#     ])
+
+# if RAILWAY_PRIVATE_DOMAIN:
+#     CSRF_TRUSTED_ORIGINS.extend([
+#         f'https://{RAILWAY_PRIVATE_DOMAIN}',
+#         f'http://{RAILWAY_PRIVATE_DOMAIN}'
+#     ])
+
+# # Application definition
+# INSTALLED_APPS = [
+#     'django.contrib.admin',
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+#     'rest_framework',
+#     'corsheaders',
+#     'core',
+# ]
+
+# MIDDLEWARE = [
+#     'django.middleware.security.SecurityMiddleware',
+#     'whitenoise.middleware.WhiteNoiseMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'corsheaders.middleware.CorsMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+# ]
+
+# ROOT_URLCONF = 'config.urls'
+
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#             ],
+#         },
+#     },
+# ]
+
+# WSGI_APPLICATION = 'config.wsgi.application'
+
+# # Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# # Password validation
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
+
+# # Internationalization
+# LANGUAGE_CODE = 'en-us'
+# TIME_ZONE = 'UTC'
+# USE_I18N = True
+# USE_TZ = True
+
+# # Static files (CSS, JavaScript, Images)
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# # Default primary key field type
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# # URL Settings
+# APPEND_SLASH = False  # Disable automatic slash appending for PATCH requests
+# FORCE_SCRIPT_NAME = ''  # Ensure no prefix is added to URLs
+
+# # REST Framework settings
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.AllowAny',
+#     ]
+# }
+
+
+
 """
 Django settings for config project.
 """
@@ -14,25 +173,25 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-wmny_ex_m87ue6ir@s07y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Get Railway URL for ALLOWED_HOSTS
-RAILWAY_URL = os.environ.get('RAILWAY_STATIC_URL', '')
+# Get Railway URLs
+RAILWAY_STATIC_URL = os.environ.get('RAILWAY_STATIC_URL', '')
+RAILWAY_PRIVATE_DOMAIN = os.environ.get('RAILWAY_PRIVATE_DOMAIN', '')
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '0.0.0.0',
-    '.railway.app',  # Allows all railway.app subdomains
+    '.railway.app',
+    RAILWAY_STATIC_URL,
+    RAILWAY_PRIVATE_DOMAIN,
 ]
-
-if RAILWAY_URL:
-    ALLOWED_HOSTS.append(RAILWAY_URL)
 
 # CORS settings
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-# Allow all headers and methods for development
+# Allow all headers and methods
 CORS_ALLOW_HEADERS = ['*']
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -43,21 +202,23 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-# Security settings for development and production
+# Security settings
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'http://192.168.0.126:8000',
-    'http://192.168.0.126',
-    'https://*.railway.app',
-    'https://*.up.railway.app'
 ]
 
-# Add Railway domain to CSRF trusted origins if RAILWAY_STATIC_URL is set
-if RAILWAY_URL:
+# Add Railway domains to CSRF trusted origins
+if RAILWAY_STATIC_URL:
     CSRF_TRUSTED_ORIGINS.extend([
-        f'https://{RAILWAY_URL}',
-        f'http://{RAILWAY_URL}'
+        f'https://{RAILWAY_STATIC_URL}',
+        f'http://{RAILWAY_STATIC_URL}'
+    ])
+
+if RAILWAY_PRIVATE_DOMAIN:
+    CSRF_TRUSTED_ORIGINS.extend([
+        f'https://{RAILWAY_PRIVATE_DOMAIN}',
+        f'http://{RAILWAY_PRIVATE_DOMAIN}'
     ])
 
 # Application definition
@@ -75,7 +236,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add whitenoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',

@@ -320,3 +320,25 @@ def food_schedule(request):
                 {"error": "User Not Found", "status": 300},
                 status=300
             )
+
+@api_view(['PATCH'])
+def update_food_truck(request):
+    registrationid = request.data.get('registrationid')
+    if not registrationid:
+        return Response(
+            {"error": "registrationid is required"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    try:
+        food_truck = FoodTruck.objects.get(registrationid=registrationid)
+        serializer = FoodTruckSerializer(food_truck, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except FoodTruck.DoesNotExist:
+        return Response(
+            {"error": "Food truck not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )

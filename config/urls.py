@@ -34,7 +34,7 @@
 
 from django.contrib import admin
 from django.urls import path
-from core.views import get_food_trucks, create_food_truck, food_schedule
+from core.views import get_food_trucks, create_food_truck, food_schedule, update_food_truck
 from django.http import HttpResponse
 
 def home(request):
@@ -45,6 +45,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/foodtrucks/', get_food_trucks),
     path('api/foodtrucks/create/', create_food_truck),
+    path('api/foodtrucks/update/', update_food_truck),
     path('api/foodtrucks/schedule', food_schedule, name='food_schedule'),
     path('api/foodtrucks/schedule/', food_schedule, name='food_schedule_with_slash'),
 ]

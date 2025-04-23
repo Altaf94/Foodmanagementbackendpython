@@ -28,11 +28,11 @@ from .models import FoodTruck, FoodSchedule
 class FoodTruckSerializer(serializers.ModelSerializer):
     class Meta:
         model = FoodTruck
-        fields = ['id', 'registrationid', 'type', 'name', 'created_at', 'updated_at']
+        fields = ['id', 'registrationid', 'truck_type', 'name', 'created_at', 'updated_at']
 
 class FoodScheduleSerializer(serializers.ModelSerializer):
     food_truck_name = serializers.CharField(source='food_truck.name', read_only=True)
-    food_truck_type = serializers.CharField(source='food_truck.type', read_only=True)
+    food_truck_type = serializers.CharField(source='food_truck.truck_type', read_only=True)
     
     class Meta:
         model = FoodSchedule

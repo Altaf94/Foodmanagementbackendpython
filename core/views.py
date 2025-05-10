@@ -169,41 +169,6 @@
 #         )
 
 
-# from rest_framework import viewsets
-# from rest_framework.decorators import action
-# from rest_framework.response import Response
-# from .models import FoodTruck
-# from .serializers import FoodTruckSerializer
-# from datetime import datetime
-
-# class FoodTruckViewSet(viewsets.ModelViewSet):
-#     queryset = FoodTruck.objects.all()
-#     serializer_class = FoodTruckSerializer
-
-#     @action(detail=False, methods=['get'])
-#     def schedule(self, request):
-#         # Get current day and time
-#         now = datetime.now()
-#         current_day = now.strftime('%A').lower()
-#         current_time = now.strftime('%H:%M')
-
-#         # Filter trucks that are open
-#         open_trucks = []
-#         for truck in self.get_queryset():
-#             if current_day in truck.schedule:
-#                 schedule = truck.schedule[current_day]
-#                 if isinstance(schedule, list):
-#                     for time_slot in schedule:
-#                         if 'open' in time_slot and 'close' in time_slot:
-#                             if time_slot['open'] <= current_time <= time_slot['close']:
-#                                 truck.is_open = True
-#                                 open_trucks.append(truck)
-#                                 break
-
-#         serializer = self.get_serializer(open_trucks, many=True)
-#         return Response(serializer.data)
-
-
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -342,3 +307,45 @@ def update_food_truck(request):
             {"error": "Food truck not found"},
             status=status.HTTP_404_NOT_FOUND
         )
+
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import FoodTruck
+from .serializers import FoodTruckSerializer
+from datetime import datetime
+from rest_framework import permissions
+
+class FoodTruckViewSet(viewsets.ModelViewSet):
+    queryset = FoodTruck.objects.all()
+    serializer_class = FoodTruckSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        return self.queryset.filter(owner=self.request.user)
+
+    @action(detail=False, methods=['get'])
+    def schedule(self, request):
+        # Get current day and time
+        now = datetime.now()
+        current_day = now.strftime('%A').lower()
+        current_time = now.strftime('%H:%M')
+
+        # Filter trucks that are open
+        open_trucks = []
+        for truck in self.get_queryset():
+            if current_day in truck.schedule:
+                schedule = truck.schedule[current_day]
+                if isinstance(schedule, list):
+                    for time_slot in schedule:
+                        if 'open' in time_slot and 'close' in time_slot:
+                            if time_slot['open'] <= current_time <= time_slot['close']:
+                                truck.is_open = True
+                                open_trucks.append(truck)
+                                break
+
+        serializer = self.get_serializer(open_trucks, many=True)
+        return Response(serializer.data)
